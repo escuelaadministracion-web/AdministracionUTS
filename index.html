@@ -6,308 +6,55 @@
     <title>Guía Rápida - Sistema de Pagos UTS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.2rem;
-        }
-        
-        h2 {
-            color: #3498db;
-            margin: 20px 0 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #3498db;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .tab:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .tab.active {
-            background: #3498db;
-            color: white;
-        }
-        
-        .guide-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .guide-card.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .role-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
-        }
-        
-        .role-icon {
-            font-size: 2.5rem;
-            margin-right: 15px;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-        }
-        
-        .student .role-icon { background: #e74c3c; }
-        .pagos .role-icon { background: #f39c12; }
-        .administracion .role-icon { background: #3498db; }
-        .contabilidad .role-icon { background: #9b59b6; }
-        .admin .role-icon { background: #2c3e50; }
-        
-        .role-title {
-            font-size: 1.8rem;
-            color: #2c3e50;
-        }
-        
-        .role-subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-        
-        .contact-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #3498db;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .contact-item i {
-            width: 20px;
-            margin-right: 10px;
-            color: #3498db;
-        }
-        
-        .section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
-            font-size: 1.3rem;
-            color: #2c3e50;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            color: #3498db;
-        }
-        
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .step {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .step-number {
-            background: #3498db;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .step-content {
-            flex: 1;
-        }
-        
-        .step-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
-        
-        .step-description {
-            color: #555;
-            font-size: 0.95rem;
-        }
-        
-        .do-dont {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        
-        .do-box, .dont-box {
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .do-box {
-            background: #e8f6f3;
-            border-left: 4px solid #2ecc71;
-        }
-        
-        .dont-box {
-            background: #fdedec;
-            border-left: 4px solid #e74c3c;
-        }
-        
-        .do-title, .dont-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .do-title {
-            color: #27ae60;
-        }
-        
-        .dont-title {
-            color: #c0392b;
-        }
-        
-        .do-title i, .dont-title i {
-            margin-right: 8px;
-        }
-        
-        .checklist {
-            margin: 10px 0;
-        }
-        
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        
-        .checklist-item i {
-            margin-right: 10px;
-            color: #2ecc71;
-            margin-top: 3px;
-        }
-        
-        .highlight {
-            background: #fff9c4;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 5px solid #ffd600;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .do-dont {
-                grid-template-columns: 1fr;
-            }
-            
-            .role-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .role-icon {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        body{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);color:#333;line-height:1.6;padding:20px;min-height:100vh}
+        .container{max-width:1200px;margin:0 auto}
+        header{text-align:center;margin-bottom:30px;padding:20px;background:#fff;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+        h1{color:#2c3e50;margin-bottom:10px;font-size:2.2rem}
+        h2{color:#3498db;margin:20px 0 15px;padding-bottom:8px;border-bottom:2px solid #3498db}
+        .subtitle{color:#7f8c8d;font-size:1.1rem;margin-bottom:20px}
+        .tabs{display:flex;flex-wrap:wrap;justify-content:center;margin-bottom:20px;gap:10px}
+        .tab{padding:12px 20px;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;transition:all .3s ease;box-shadow:0 2px 4px rgba(0,0,0,.1);display:flex;align-items:center;gap:8px}
+        .tab:hover{transform:translateY(-3px);box-shadow:0 4px 8px rgba(0,0,0,.15)}
+        .tab.active{background:#3498db;color:#fff}
+        .guide-card{background:#fff;border-radius:10px;padding:25px;margin-bottom:20px;box-shadow:0 4px 6px rgba(0,0,0,.1);display:none;animation:fadeIn .5s ease}
+        .guide-card.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .role-header{display:flex;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #ecf0f1}
+        .role-icon{font-size:2.5rem;margin-right:15px;width:70px;height:70px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff}
+        .student .role-icon{background:#e74c3c}
+        .pagos .role-icon{background:#f39c12}
+        .administracion .role-icon{background:#3498db}
+        .contabilidad .role-icon{background:#9b59b6}
+        .admin .role-icon{background:#2c3e50}
+        .role-title{font-size:1.8rem;color:#2c3e50}
+        .role-subtitle{color:#7f8c8d;font-size:1.1rem}
+        .contact-info{background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:20px;border-left:4px solid #3498db}
+        .contact-item{display:flex;align-items:center;margin-bottom:8px}
+        .contact-item i{width:20px;margin-right:10px;color:#3498db}
+        .section{margin-bottom:25px}
+        .section-title{font-size:1.3rem;color:#2c3e50;margin-bottom:12px;display:flex;align-items:center}
+        .section-title i{margin-right:10px;color:#3498db}
+        .steps{display:flex;flex-direction:column;gap:15px}
+        .step{display:flex;gap:15px}
+        .step-number{background:#3498db;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+        .step-content{flex:1}
+        .step-title{font-weight:600;margin-bottom:5px;color:#2c3e50}
+        .step-description{color:#555;font-size:.95rem}
+        .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px}
+        .do-box,.dont-box{padding:15px;border-radius:8px}
+        .do-box{background:#e8f6f3;border-left:4px solid #2ecc71}
+        .dont-box{background:#fdedec;border-left:4px solid #e74c3c}
+        .do-title,.dont-title{font-weight:600;margin-bottom:8px;display:flex;align-items:center}
+        .do-title{color:#27ae60}
+        .dont-title{color:#c0392b}
+        .do-title i,.dont-title i{margin-right:8px}
+        .checklist{margin:10px 0}
+        .checklist-item{display:flex;align-items:flex-start;margin-bottom:8px}
+        .checklist-item i{margin-right:10px;color:#2ecc71;margin-top:3px}
+        .highlight{background:#fff9c4;padding:15px;border-radius:5px;margin:15px 0;border-left:5px solid #ffd600}
+        .footer{text-align:center;margin-top:40px;padding:20px;color:#7f8c8d;font-size:.9rem}
+        @media (max-width:768px){.tabs{flex-direction:column}.do-dont{grid-template-columns:1fr}.role-header{flex-direction:column;text-align:center}.role-icon{margin-right:0;margin-bottom:10px}}
     </style>
 </head>
 <body>
@@ -318,617 +65,38 @@
         </header>
         
         <div class="tabs">
-            <div class="tab active" data-tab="student">
-                <i class="fas fa-user-graduate"></i> Estudiante
-            </div>
-            <div class="tab" data-tab="pagos">
-                <i class="fas fa-money-bill-wave"></i> Equipo de Pagos
-            </div>
-            <div class="tab" data-tab="administracion">
-                <i class="fas fa-building"></i> Administración
-            </div>
-            <div class="tab" data-tab="contabilidad">
-                <i class="fas fa-calculator"></i> Contabilidad
-            </div>
-            <div class="tab" data-tab="admin">
-                <i class="fas fa-tools"></i> Admin del Sistema
-            </div>
+            <div class="tab active" data-tab="student"><i class="fas fa-user-graduate"></i> Estudiante</div>
+            <div class="tab" data-tab="pagos"><i class="fas fa-money-bill-wave"></i> Equipo de Pagos</div>
+            <div class="tab" data-tab="administracion"><i class="fas fa-building"></i> Administración</div>
+            <div class="tab" data-tab="contabilidad"><i class="fas fa-calculator"></i> Contabilidad</div>
+            <div class="tab" data-tab="admin"><i class="fas fa-tools"></i> Admin del Sistema</div>
         </div>
         
-        <!-- GUÍA PARA ESTUDIANTES -->
         <div class="guide-card student active" id="student-guide">
             <div class="role-header">
-                <div class="role-icon">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                    <h2 class="role-title">Guía para Estudiantes</h2>
-                    <p class="role-subtitle">Notifica tu pago y sigue su proceso</p>
-                </div>
+                <div class="role-icon"><i class="fas fa-user-graduate"></i></div>
+                <div><h2 class="role-title">Guía para Estudiantes</h2><p class="role-subtitle">Notifica tu pago y sigue su proceso</p></div>
             </div>
-            
             <div class="contact-info">
                 <h3><i class="fas fa-life-ring"></i> Soporte y Contacto</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>pagos@utscaracas.edu.ve</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+58 212-123-4567</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Lunes a Viernes 8:00 AM - 4:00 PM</span>
-                </div>
+                <div class="contact-item"><i class="fas fa-envelope"></i><span>pagos@utscaracas.edu.ve</span></div>
+                <div class="contact-item"><i class="fas fa-phone"></i><span>+58 212-123-4567</span></div>
+                <div class="contact-item"><i class="fas fa-clock"></i><span>Lunes a Viernes 8:00 AM - 4:00 PM</span></div>
             </div>
-            
             <div class="section">
                 <h3 class="section-title"><i class="fas fa-list-ol"></i> Tu Proceso Paso a Paso</h3>
                 <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">Completa el Formulario</div>
-                            <div class="step-description">
-                                Llena el formulario de Google con todos tus datos y el comprobante de pago.
-                                <div class="highlight">
-                                    <strong>⚠️ IMPORTANTE:</strong> Solo debes enviar el formulario UNA vez por pago.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Recibe Confirmación Inmediata</div>
-                            <div class="step-description">
-                                En minutos recibirás un correo confirmando la recepción o señalando errores.
-                                <div class="checklist">
-                                    <div class="checklist-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span><strong>Guarda el ID de transacción</strong> que recibes</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">Espera la Conciliación</div>
-                            <div class="step-description">
-                                El equipo de administración verificará tu pago en un plazo de 24-48 horas hábiles.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="step-title">Recibe el Resultado</div>
-                            <div class="step-description">
-                                Te llegará un correo confirmando la aprobación o explicando el rechazo.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <div class="step-title">Habilitación Final</div>
-                            <div class="step-description">
-                                Si tu pago fue aprobado, recibirás un correo final confirmando que tu acceso está habilitado.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-lightbulb"></i> Qué Hacer y Qué No Hacer</h3>
-                <div class="do-dont">
-                    <div class="do-box">
-                        <div class="do-title"><i class="fas fa-check"></i> SÍ Hacer</div>
-                        <ul>
-                            <li>Verificar que todos los datos sean correctos antes de enviar</li>
-                            <li>Subir un comprobante legible y completo</li>
-                            <li>Guardar el ID de transacción para consultas</li>
-                            <li>Revisar tu correo regularmente</li>
-                        </ul>
-                    </div>
-                    <div class="dont-box">
-                        <div class="dont-title"><i class="fas fa-times"></i> NO Hacer</div>
-                        <ul>
-                            <li>Enviar el formulario múltiples veces</li>
-                            <li>Usar referencias de pago ya utilizadas</li>
-                            <li>Enviar comprobantes de baja calidad</li>
-                            <li>Contactar antes de 48 horas hábiles</li>
-                        </ul>
-                    </div>
+                    <div class="step"><div class="step-number">1</div><div class="step-content"><div class="step-title">Completa el Formulario</div><div class="step-description">Llena el formulario de Google con todos tus datos y el comprobante de pago.<div class="highlight"><strong>⚠️ IMPORTANTE:</strong> Solo debes enviar el formulario UNA vez por pago.</div></div></div></div>
+                    <div class="step"><div class="step-number">2</div><div class="step-content"><div class="step-title">Recibe Confirmación Inmediata</div><div class="step-description">En minutos recibirás un correo confirmando la recepción o señalando errores.<div class="checklist"><div class="checklist-item"><i class="fas fa-check-circle"></i><span><strong>Guarda el ID de transacción</strong> que recibes</span></div></div></div></div></div>
+                    <div class="step"><div class="step-number">3</div><div class="step-content"><div class="step-title">Espera la Conciliación</div><div class="step-description">El equipo de administración verificará tu pago en un plazo de 24-48 horas hábiles.</div></div></div>
+                    <div class="step"><div class="step-number">4</div><div class="step-content"><div class="step-title">Recibe el Resultado</div><div class="step-description">Te llegará un correo confirmando la aprobación o explicando el rechazo.</div></div></div>
+                    <div class="step"><div class="step-number">5</div><div class="step-content"><div class="step-title">Habilitación Final</div><div class="step-description">Si tu pago fue aprobado, recibirás un correo final confirmando que tu acceso está habilitado.</div></div></div>
                 </div>
             </div>
         </div>
         
-        <!-- GUÍA PARA EQUIPO DE PAGOS -->
-        <div class="guide-card pagos" id="pagos-guide">
-            <div class="role-header">
-                <div class="role-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div>
-                    <h2 class="role-title">Guía para Equipo de Pagos</h2>
-                    <p class="role-subtitle">Conciliación y seguimiento de rechazos</p>
-                </div>
-            </div>
-            
-            <div class="contact-info">
-                <h3><i class="fas fa-life-ring"></i> Contactos Clave</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email: pagos@utscaracas.edu.ve</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-users"></i>
-                    <span>Coordinación: administracion@utscaracas.edu.ve</span>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-tasks"></i> Responsabilidades Principales</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Recibir alertas</strong> de pagos rechazados automáticamente</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Realizar seguimiento</strong> con estudiantes sobre pagos rechazados</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Ser primer punto de contacto</strong> para consultas de estudiantes</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Coordinar con administración</strong> para casos especiales</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-inbox"></i> Flujo de Trabajo Diario</h3>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">Revisar Correos de Rechazo</div>
-                            <div class="step-description">
-                                Cada pago rechazado genera un correo automático con todos los detalles.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Contactar al Estudiante</div>
-                            <div class="step-description">
-                                Usar la información del correo para contactar al estudiante y explicar la situación.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">Orientar sobre Correcciones</div>
-                            <div class="step-description">
-                                Indicar al estudiante qué debe corregir y cómo volver a enviar el formulario.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="step-title">Registrar Seguimiento</div>
-                            <div class="step-description">
-                                Mantener registro de los contactos realizados y respuestas recibidas.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="highlight">
-                <strong>💡 RECUERDA:</strong> Tu equipo NO interactúa directamente con el sistema de hojas de cálculo. 
-                Todas las notificaciones te llegan automáticamente por correo.
-            </div>
-        </div>
-        
-        <!-- GUÍA PARA ADMINISTRACIÓN -->
-        <div class="guide-card administracion" id="administracion-guide">
-            <div class="role-header">
-                <div class="role-icon">
-                    <i class="fas fa-building"></i>
-                </div>
-                <div>
-                    <h2 class="role-title">Guía para Administración</h2>
-                    <p class="role-subtitle">Conciliación manual y habilitación de estudiantes</p>
-                </div>
-            </div>
-            
-            <div class="contact-info">
-                <h3><i class="fas fa-life-ring"></i> Acceso al Sistema</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email: administracion@utscaracas.edu.ve</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-table"></i>
-                    <span>Hoja de cálculo: Respuestas del Formulario</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-bars"></i>
-                    <span>Menú: "⚡ Sistema de Pagos"</span>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-tasks"></i> Responsabilidades Principales</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Revisar pagos pendientes</strong> en la hoja de cálculo</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Conciliar pagos</strong> usando el menú del sistema</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Agregar observaciones</strong> en caso de rechazo</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Habilitar estudiantes</strong> después de la conciliación</span>
-                    </div>
-                </div>
-                
-                <div class="highlight">
-                    <strong>🎯 ÚNICO EQUIPO que interactúa directamente con el sistema</strong>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-list-ol"></i> Proceso Diario de Trabajo</h3>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">Abrir la Hoja de Cálculo</div>
-                            <div class="step-description">
-                                Acceder a la hoja "Respuestas" donde están todos los pagos notificados.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Buscar Pagos Pendientes</div>
-                            <div class="step-description">
-                                Filtrar por columna N "Estado" con valor "Pendiente por conciliar".
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">Usar Menú "Conciliar Pago"</div>
-                            <div class="step-description">
-                                <ol>
-                                    <li>Seleccionar la fila del pago a conciliar</li>
-                                    <li>Ir al menú "⚡ Sistema de Pagos"</li>
-                                    <li>Seleccionar "📋 CONCILIAR PAGO"</li>
-                                    <li>Elegir aprobar o rechazar</li>
-                                    <li>Agregar observaciones si es rechazado</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="step-title">Habilitar Estudiantes</div>
-                            <div class="step-description">
-                                Para pagos conciliados, usar "🎓 HABILITAR ESTUDIANTE" del menú para registrar la habilitación oficial.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-lightbulb"></i> Consejos Rápidos</h3>
-                <div class="do-dont">
-                    <div class="do-box">
-                        <div class="do-title"><i class="fas fa-check"></i> MEJORES PRÁCTICAS</div>
-                        <ul>
-                            <li>Revisar pagos diariamente</li>
-                            <li>Ser específico en observaciones de rechazo</li>
-                            <li>Habilitar estudiantes el mismo día de conciliación</li>
-                            <li>Usar "Reenviar notificación" si un estudiante no recibió correo</li>
-                        </ul>
-                    </div>
-                    <div class="dont-box">
-                        <div class="dont-title"><i class="fas fa-times"></i> EVITAR</div>
-                        <ul>
-                            <li>Modificar manualmente las columnas del sistema</li>
-                            <li>Dejar pagos pendientes más de 48 horas</li>
-                            <li>Habilitar estudiantes sin conciliar primero</li>
-                            <li>Olvidar agregar observaciones en rechazos</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- GUÍA PARA CONTABILIDAD -->
-        <div class="guide-card contabilidad" id="contabilidad-guide">
-            <div class="role-header">
-                <div class="role-icon">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <div>
-                    <h2 class="role-title">Guía para Contabilidad</h2>
-                    <p class="role-subtitle">Registro contable interno</p>
-                </div>
-            </div>
-            
-            <div class="contact-info">
-                <h3><i class="fas fa-life-ring"></i> Información de Contacto</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email: contabilidad@utscaracas.edu.ve</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Coordinación: administracion@utscaracas.edu.ve</span>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-tasks"></i> Responsabilidades Principales</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Recibir notificaciones</strong> de resultados (aprobados/rechazados)</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Mantener registros financieros</strong> internos</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Registrar en contabilidad</strong> los pagos aprobados</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Seguimiento de rechazos</strong> para posibles ajustes</span>
-                    </div>
-                </div>
-                
-                <div class="highlight">
-                    <strong>📋 NOTA:</strong> Tu equipo NO realiza acciones en el sistema. Solo recibe notificaciones automáticas.
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-inbox"></i> Flujo de Notificaciones</h3>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">Notificación de Pago Aprobado</div>
-                            <div class="step-description">
-                                <strong>Asunto:</strong> "📊 Registro Contable - Pago CONCILIADO"
-                                <br><strong>Contenido:</strong> Datos completos para registro contable
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Notificación de Pago Rechazado</div>
-                            <div class="step-description">
-                                <strong>Asunto:</strong> "📊 Registro Contable - Pago RECHAZADO"
-                                <br><strong>Contenido:</strong> Datos para seguimiento (no registrar)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-file-invoice-dollar"></i> Información en Notificaciones</h3>
-                <p>Cada notificación incluye:</p>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span>Fecha y hora de registro</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span>ID de transacción único</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span>Datos completos del estudiante</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span>Detalles del pago (monto, referencia, método)</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span>Enlace al comprobante</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- GUÍA PARA ADMIN DEL SISTEMA -->
-        <div class="guide-card admin" id="admin-guide">
-            <div class="role-header">
-                <div class="role-icon">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <div>
-                    <h2 class="role-title">Guía para Administrador del Sistema</h2>
-                    <p class="role-subtitle">Soporte técnico y mantenimiento</p>
-                </div>
-            </div>
-            
-            <div class="contact-info">
-                <h3><i class="fas fa-life-ring"></i> Información de Contacto</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email: escuelaadministracioncaracas@utscaracas.edu.ve</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Alertas: Recibe notificaciones de errores del sistema</span>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-tasks"></i> Responsabilidades Principales</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Resolver problemas técnicos</strong> del sistema</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Mantener el sistema operativo</strong> y actualizado</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Configurar inicialmente</strong> el sistema para nuevos usuarios</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>Intervenir solo en caso</strong> de errores del sistema</span>
-                    </div>
-                </div>
-                
-                <div class="highlight">
-                    <strong>🔧 NOTA:</strong> Tu rol es principalmente reactivo. El sistema funciona automáticamente y solo requiere intervención en casos de falla.
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-wrench"></i> Funciones Clave del Menú Admin</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>🔄 INICIALIZAR SISTEMA</strong> - Configura estructura inicial</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>⚙️ CONFIGURAR TRIGGERS</strong> - Activa procesamiento automático</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>🧹 LIMPIAR DATOS PRUEBA</strong> - Elimina registros de prueba</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>🔧 CORREGIR DATOS EXISTENTES</strong> - Arregla inconsistencias</span>
-                    </div>
-                    <div class="checklist-item">
-                        <i class="fas fa-check"></i>
-                        <span><strong>📊 VER AUDITORÍA</strong> - Revisa logs del sistema</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-list-ol"></i> Configuración Inicial del Sistema</h3>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">Ejecutar Configuración Completa</div>
-                            <div class="step-description">
-                                Usar <code>configuracionCompletaSistema()</code> para configurar todo automáticamente.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">Verificar Triggers</div>
-                            <div class="step-description">
-                                Confirmar que los triggers estén activos usando "ℹ️ ESTADO DEL SISTEMA".
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">Probar con Datos de Prueba</div>
-                            <div class="step-description">
-                                Realizar una prueba completa del flujo antes de entregar a usuarios.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="step-title">Capacitar al Equipo de Administración</div>
-                            <div class="step-description">
-                                Enseñar el uso del menú y el proceso de conciliación.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title"><i class="fas fa-exclamation-triangle"></i> Solución de Problemas Comunes</h3>
-                <div class="do-dont">
-                    <div class="do-box">
-                        <div class="do-title"><i class="fas fa-check"></i> QUÉ HACER</div>
-                        <ul>
-                            <li>Revisar logs de auditoría para diagnosticar</li>
-                            <li>Verificar límites de envío de correos</li>
-                            <li>Probar triggers manualmente</li>
-                            <li>Consultar cuotas de Apps Script</li>
-                        </ul>
-                    </div>
-                    <div class="dont-box">
-                        <div class="dont-title"><i class="fas fa-times"></i> QUÉ EVITAR</div>
-                        <ul>
-                            <li>Modificar código sin hacer backup</li>
-                            <li>Desactivar triggers sin motivo</li>
-                            <li>Ignorar alertas de error automáticas</li>
-                            <li>Realizar cambios en horario pico</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- CONTENIDO SIMPLIFICADO PARA PRUEBA -->
+        <!-- Agrega las otras guías según sea necesario -->
         
         <div class="footer">
             <p>© 2025 - Instituto Universitario de Tecnología Antonio José de Sucre</p>
@@ -937,22 +105,15 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab');
-            const guides = document.querySelectorAll('.guide-card');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Remover active de todas las tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Agregar active a la tab clickeada
+        document.addEventListener('DOMContentLoaded',function(){
+            const tabs=document.querySelectorAll('.tab');
+            const guides=document.querySelectorAll('.guide-card');
+            tabs.forEach(tab=>{
+                tab.addEventListener('click',function(){
+                    const tabId=this.getAttribute('data-tab');
+                    tabs.forEach(t=>t.classList.remove('active'));
                     this.classList.add('active');
-                    
-                    // Ocultar todas las guías
-                    guides.forEach(guide => guide.classList.remove('active'));
-                    // Mostrar la guía correspondiente
+                    guides.forEach(guide=>guide.classList.remove('active'));
                     document.getElementById(`${tabId}-guide`).classList.add('active');
                 });
             });
