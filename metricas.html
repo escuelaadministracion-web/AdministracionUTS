@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Métricas - Gestión de Pagos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .metric-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .metric-column {
+            background: #3498db;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .metric-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .metric-details {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .example-table th, .example-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .example-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .visualization {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .chart {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .bar {
+            width: 40px;
+            background: #3498db;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .good { background: #2ecc71; }
+        .warning { background: #f39c12; }
+        .bad { background: #e74c3c; }
+
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .process-step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .step-arrow {
+            position: absolute;
+            right: -30px;
+            top: 35px;
+            color: #7f8c8d;
+            font-size: 1.5rem;
+        }
+
+        .step-time {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Estilos para la nota final */
+        .designer-note {
+            margin: 40px 0;
+            padding: 25px;
+            text-align: center;
+            border-top: 2px solid #3498db;
+            border-bottom: 2px solid #3498db;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .designer-name {
+            font-size: 11pt;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .designer-quote {
+            font-size: 11pt;
+            font-style: italic;
+            color: #7f8c8d;
+            line-height: 1.4;
+        }
+
+        .separator {
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+            margin: 15px auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .process-flow {
+                flex-direction: column;
+            }
+            
+            .step-arrow {
+                display: none;
+            }
+            
+            .process-step {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 SISTEMA DE MÉTRICAS DE PAGOS</h1>
+            <p class="subtitle">Guía completa para entender y utilizar las métricas automatizadas</p>
+            <p>Monitorea, analiza y mejora tu proceso de gestión de pagos estudiantiles</p>
+        </header>
+<!-- BOTÓN DE VOLVER A LA GUÍA PRINCIPAL -->
+<div style="text-align: center; margin: 15px 0 25px 0;">
+    <a href="index.html" 
+       style="display: inline-flex; align-items: center; gap: 8px; background: white; 
+              color: #3498db; padding: 10px 20px; border-radius: 50px; text-decoration: none; 
+              font-weight: 600; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+        <i class="fas fa-arrow-left"></i> Volver a la Guía Principal
+    </a>
+</div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="openTab('intro')">Introducción</button>
+            <button class="tab-btn" onclick="openTab('metricas')">Métricas</button>
+            <button class="tab-btn" onclick="openTab('proceso')">Proceso</button>
+            <button class="tab-btn" onclick="openTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="openTab('acciones')">Acciones</button>
+        </div>
+
+        <!-- INTRODUCCIÓN -->
+        <div id="intro" class="tab-content active">
+            <h2>🎯 ¿Por Qué Medimos?</h2>
+            <div class="metric-card">
+                <p>Antes trabajábamos <strong>a ciegas</strong>. Ahora tenemos <strong>datos precisos</strong> para:</p>
+                <ul style="margin: 15px 0 15px 20px;">
+                    <li>Identificar cuellos de botella en el proceso</li>
+                    <li>Medir el impacto real de nuestras mejoras</li>
+                    <li>Tomar decisiones basadas en datos, no en suposiciones</li>
+                    <li>Demostrar nuestro valor y eficiencia</li>
+                </ul>
+            </div>
+
+            <h2>🔧 ¿Qué Se Automatizó?</h2>
+            <div class="visualization">
+                <div class="chart-container">
+                    <h3>Antes vs Después</h3>
+                    <div class="chart">
+                        <div class="bar bad" style="height: 80%;">
+                            <div class="bar-value">72h</div>
+                            <div class="bar-label">ANTES</div>
+                        </div>
+                        <div class="bar good" style="height: 30%;">
+                            <div class="bar-value">18h</div>
+                            <div class="bar-label">DESPUÉS</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px;">Tiempo promedio de procesamiento</p>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Columnas Automatizadas T-Z</div>
+                </div>
+                <div class="metric-description">
+                    El sistema ahora calcula automáticamente 7 métricas clave cada vez que un estudiante envía un pago
+                </div>
+                <div class="metric-details">
+                    <table class="example-table">
+                        <tr>
+                            <th>Columna</th>
+                            <th>Métrica</th>
+                            <th>Se calcula automáticamente</th>
+                        </tr>
+                        <tr>
+                            <td><strong>T</strong></td>
+                            <td>Fecha Validación</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>U</strong></td>
+                            <td>Tiempo Captura→Validación</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>V</strong></td>
+                            <td>Tiempo Validación→Conciliación</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>W</strong></td>
+                            <td>Tiempo Total</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>X</strong></td>
+                            <td>Reproceso</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Y</strong></td>
+                            <td>SLA 24h</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Z</strong></td>
+                            <td>Período Pre/Post</td>
+                            <td>✅ SÍ</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÉTRICAS DETALLADAS -->
+        <div id="metricas" class="tab-content">
+            <h2>📈 Detalle de Cada Métrica</h2>
+
+            <!-- Métrica T -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">T - Fecha Validación</div>
+                    <div class="metric-column">Columna T</div>
+                </div>
+                <div class="metric-description">
+                    Registra el momento exacto en que el sistema marca un pago como "Válido"
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> El inicio del procesamiento administrativo</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">Timestamp automático cuando Q = "Válido"</span></p>
+                    <p><strong>Objetivo:</strong> Menos de 1 hora después del envío</p>
+                    <p><strong>Problema que identifica:</strong> Demoras en la validación automática</p>
+                </div>
+            </div>
+
+            <!-- Métrica U -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">U - Tiempo Captura → Validación</div>
+                    <div class="metric-column">Columna U</div>
+                </div>
+                <div class="metric-description">
+                    Mide cuánto tarda el sistema en validar automáticamente un pago después de ser enviado
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Eficiencia del proceso de validación automática</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= (T - A) * 24</span></p>
+                    <p><strong>Objetivo:</strong> < 1 hora</p>
+                    <p><strong>Problema que identifica:</strong> Lentitud en validaciones automáticas</p>
+                    <div class="visualization">
+                        <div class="chart-container">
+                            <h4>Ejemplo de Tiempos</h4>
+                            <div class="chart">
+                                <div class="bar good" style="height: 30%;">
+                                    <div class="bar-value">0.5h</div>
+                                    <div class="bar-label">Óptimo</div>
+                                </div>
+                                <div class="bar warning" style="height: 60%;">
+                                    <div class="bar-value">2h</div>
+                                    <div class="bar-label">Aceptable</div>
+                                </div>
+                                <div class="bar bad" style="height: 90%;">
+                                    <div class="bar-value">6h</div>
+                                    <div class="bar-label">Problema</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Métrica V -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">V - Tiempo Validación → Conciliación</div>
+                    <div class="metric-column">Columna V</div>
+                </div>
+                <div class="metric-description">
+                    Mide cuánto tarda el equipo administrativo en conciliar un pago ya validado
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Eficiencia del proceso manual de conciliación</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= (O - T) * 24</span></p>
+                    <p><strong>Objetivo:</strong> < 23 horas (para cumplir SLA 24h total)</p>
+                    <p><strong>Problema que identifica:</strong> Cuellos de botella en conciliación manual</p>
+                </div>
+            </div>
+
+            <!-- Métrica W -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">W - Tiempo Total del Proceso</div>
+                    <div class="metric-column">Columna W</div>
+                </div>
+                <div class="metric-description">
+                    **MÉTRICA PRINCIPAL**: Tiempo total desde que el estudiante envía el pago hasta que es conciliado
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Eficiencia global del proceso completo</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= (O - A) * 24</span></p>
+                    <p><strong>Objetivo:</strong> < 24 horas (SLA contratado)</p>
+                    <p><strong>Problema que identifica:</strong> Incumplimiento de servicio al estudiante</p>
+                    <div class="visualization">
+                        <div class="chart-container">
+                            <h4>Distribución de Tiempos Totales</h4>
+                            <div class="chart">
+                                <div class="bar good" style="height: 40%;">
+                                    <div class="bar-value">12h</div>
+                                    <div class="bar-label">Rápido</div>
+                                </div>
+                                <div class="bar good" style="height: 70%;">
+                                    <div class="bar-value">18h</div>
+                                    <div class="bar-label">OK</div>
+                                </div>
+                                <div class="bar warning" style="height: 90%;">
+                                    <div class="bar-value">22h</div>
+                                    <div class="bar-label">Límite</div>
+                                </div>
+                                <div class="bar bad" style="height: 100%;">
+                                    <div class="bar-value">48h</div>
+                                    <div class="bar-label">Problema</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Métrica X -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">X - Indicador de Reproceso</div>
+                    <div class="metric-column">Columna X</div>
+                </div>
+                <div class="metric-description">
+                    Identifica pagos que llegaron con errores y necesitaron corrección
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Calidad de los datos enviados por estudiantes</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= SI(Q = "Inválido"; 1; 0)</span></p>
+                    <p><strong>Objetivo:</strong> < 5% (menos de 1 de cada 20)</p>
+                    <p><strong>Problema que identifica:</strong> Formulario confuso o instrucciones poco claras</p>
+                </div>
+            </div>
+
+            <!-- Métrica Y -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Y - Cumplimiento SLA 24 Horas</div>
+                    <div class="metric-column">Columna Y</div>
+                </div>
+                <div class="metric-description">
+                    Indica si el pago fue procesado dentro del tiempo prometido (24 horas)
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Cumplimiento de nuestro compromiso de servicio</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= SI(W <= 24; 1; 0)</span></p>
+                    <p><strong>Objetivo:</strong> > 95% (19 de cada 20 pagos a tiempo)</p>
+                    <p><strong>Problema que identifica:</strong> Incumplimiento sistemático de plazos</p>
+                </div>
+            </div>
+
+            <!-- Métrica Z -->
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Z - Período Pre/Post</div>
+                    <div class="metric-column">Columna Z</div>
+                </div>
+                <div class="metric-description">
+                    Clasifica los pagos según si fueron antes o después de una mejora específica
+                </div>
+                <div class="metric-details">
+                    <p><strong>¿Qué mide?</strong> Impacto de mejoras en el proceso</p>
+                    <p><strong>Fórmula:</strong> <span class="formula">= SI(A < AA$1; "pre"; "post")</span></p>
+                    <p><strong>Objetivo:</strong> Demostrar mejora continua</p>
+                    <p><strong>Problema que identifica:</strong> Falta de mejora después de cambios</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROCESO COMPLETO -->
+        <div id="proceso" class="tab-content">
+            <h2>🔄 Visualización del Proceso Completo</h2>
+            
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-icon">📥</div>
+                    <h3>1. Notificación</h3>
+                    <p>Estudiante envía formulario</p>
+                    <div class="step-time">Tiempo: 0h</div>
+                </div>
+                <div class="step-arrow">→</div>
+                
+                <div class="process-step">
+                    <div class="step-icon">🤖</div>
+                    <h3>2. Validación Automática</h3>
+                    <p>Sistema verifica datos</p>
+                    <div class="step-time" id="step-u">Tiempo: ?h</div>
+                </div>
+                <div class="step-arrow">→</div>
+                
+                <div class="process-step">
+                    <div class="step-icon">👨‍💼</div>
+                    <h3>3. Conciliación Manual</h3>
+                    <p>Administración verifica comprobante</p>
+                    <div class="step-time" id="step-v">Tiempo: ?h</div>
+                </div>
+                <div class="step-arrow">→</div>
+                
+                <div class="process-step">
+                    <div class="step-icon">✅</div>
+                    <h3>4. Conciliado</h3>
+                    <p>Pago completado</p>
+                    <div class="step-time" id="step-w">Total: ?h</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <h3>Simulador de Proceso</h3>
+                <p>Modifica los tiempos para ver el impacto en las métricas:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                    <div>
+                        <label for="time-u">Tiempo Validación (horas):</label>
+                        <input type="range" id="time-u" min="0" max="10" step="0.5" value="0.5" onchange="updateProcess()">
+                        <span id="time-u-value">0.5</span>h
+                    </div>
+                    <div>
+                        <label for="time-v">Tiempo Conciliación (horas):</label>
+                        <input type="range" id="time-v" min="1" max="48" step="1" value="18" onchange="updateProcess()">
+                        <span id="time-v-value">18</span>h
+                    </div>
+                </div>
+                
+                <div class="visualization">
+                    <div class="chart-container">
+                        <h4>Resultado del Proceso</h4>
+                        <div class="chart">
+                            <div class="bar" id="total-bar" style="height: 50%; background: #3498db;">
+                                <div class="bar-value" id="total-value">18.5h</div>
+                                <div class="bar-label">TOTAL</div>
+                            </div>
+                        </div>
+                        <p id="sla-status" style="text-align: center; margin-top: 10px; font-weight: bold; color: #2ecc71;">✅ DENTRO DEL SLA</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔍 Análisis de Cuellos de Botella</h3>
+            <div class="metric-card">
+                <p>El sistema identifica automáticamente dónde están las demoras:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div>
+                        <h4>Si U ≪ V</h4>
+                        <p>✅ Validación rápida<br>❌ Conciliación lenta</p>
+                        <p><strong>Solución:</strong> Optimizar proceso manual</p>
+                    </div>
+                    <div>
+                        <h4>Si U ≈ V</h4>
+                        <p>✅ Proceso balanceado<br>⚠️ Revisar ambos pasos</p>
+                        <p><strong>Solución:</strong> Mejora general del flujo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="tab-content">
+            <h2>📊 Dashboard de Indicadores</h2>
+            
+            <div class="visualization">
+                <div class="chart-container">
+                    <h3>Tiempo Promedio por Período</h3>
+                    <div class="chart">
+                        <div class="bar bad" style="height: 80%;">
+                            <div class="bar-value">72h</div>
+                            <div class="bar-label">PRE</div>
+                        </div>
+                        <div class="bar good" style="height: 30%;">
+                            <div class="bar-value">18h</div>
+                            <div class="bar-label">POST</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px;"><strong>75% de mejora</strong></p>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Tasa de Reproceso</h3>
+                    <div class="chart">
+                        <div class="bar bad" style="height: 70%;">
+                            <div class="bar-value">25%</div>
+                            <div class="bar-label">PRE</div>
+                        </div>
+                        <div class="bar good" style="height: 20%;">
+                            <div class="bar-value">8%</div>
+                            <div class="bar-label">POST</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px;"><strong>68% de reducción</strong></p>
+                </div>
+            </div>
+
+            <div class="visualization">
+                <div class="chart-container">
+                    <h3>Cumplimiento SLA 24h</h3>
+                    <div class="chart">
+                        <div class="bar bad" style="height: 50%;">
+                            <div class="bar-value">45%</div>
+                            <div class="bar-label">PRE</div>
+                        </div>
+                        <div class="bar good" style="height: 95%;">
+                            <div class="bar-value">92%</div>
+                            <div class="bar-label">POST</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px;"><strong>104% de mejora</strong></p>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Estudiantes Habilitados/Mes</h3>
+                    <div class="chart">
+                        <div class="bar warning" style="height: 40%;">
+                            <div class="bar-value">80</div>
+                            <div class="bar-label">PRE</div>
+                        </div>
+                        <div class="bar good" style="height: 100%;">
+                            <div class="bar-value">210</div>
+                            <div class="bar-label">POST</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px;"><strong>162% de aumento</strong></p>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <h3>📋 Resumen Ejecutivo Automático</h3>
+                <div style="background: #e8f4fd; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <p><strong>PERÍODO:</strong> Últimos 30 días</p>
+                    <p><strong>PAGOS PROCESADOS:</strong> 145 estudiantes</p>
+                    <p><strong>TIEMPO PROMEDIO:</strong> 18.5 horas (✅ dentro de SLA)</p>
+                    <p><strong>REPROCESO:</strong> 8% (✅ por debajo del objetivo)</p>
+                    <p><strong>SLA CUMPLIDO:</strong> 92% (✅ cerca del objetivo 95%)</p>
+                    <p><strong>MEJORA vs PERÍODO ANTERIOR:</strong> +75% eficiencia</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div id="acciones" class="tab-content">
+            <h2>🎯 Acciones Basadas en Métricas</h2>
+
+            <div class="metric-card">
+                <h3>🚨 Acciones Inmediatas (Según Umbrales)</h3>
+                
+                <table class="example-table">
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Umbral Crítico</th>
+                        <th>Acción Automatizada</th>
+                        <th>Responsable</th>
+                    </tr>
+                    <tr>
+                        <td><strong>W > 24h</strong></td>
+                        <td>SLA incumplido</td>
+                        <td>Notificación a gerencia</td>
+                        <td>Sistema automático</td>
+                    </tr>
+                    <tr>
+                        <td><strong>X > 15%</strong></td>
+                        <td>Alto reproceso</td>
+                        <td>Revisión de formulario</td>
+                        <td>Equipo TI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V > 20h</strong></td>
+                        <td>Conciliación lenta</td>
+                        <td>Redistribución de carga</td>
+                        <td>Supervisor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Y < 80%</strong></td>
+                        <td>SLA en riesgo</td>
+                        <td>Análisis de causas raíz</td>
+                        <td>Gerencia</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="metric-card">
+                <h3>📈 Acciones Estratégicas (Mejora Continua)</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4>🔄 SI Reproceso > 10%</h4>
+                        <ul>
+                            <li>Simplificar formulario de pago</li>
+                            <li>Mejorar instrucciones para estudiantes</li>
+                            <li>Agregar validaciones en tiempo real</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>⏱️ SI Tiempo V > 18h</h4>
+                        <ul>
+                            <li>Capacitar equipo de conciliación</li>
+                            <li>Automatizar verificación de comprobantes</li>
+                            <li>Establecer turnos de revisión</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>📉 SI SLA < 85%</h4>
+                        <ul>
+                            <li>Revisar carga de trabajo del equipo</li>
+                            <li>Implementar sistema de prioridades</li>
+                            <li>Establecer metas por colaborador</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>📊 SI Mejora Post < 20%</h4>
+                        <ul>
+                            <li>Evaluar efectividad de cambios</li>
+                            <li>Buscar mejores prácticas externas</li>
+                            <li>Involucrar al equipo en solución</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <h3>💡 Plan de Mejora Basado en Datos</h3>
+                
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="step-icon">1</div>
+                        <h3>Medir</h3>
+                        <p>Recolectar datos actuales</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">2</div>
+                        <h3>Analizar</h3>
+                        <p>Identificar problemas específicos</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">3</div>
+                        <h3>Actuar</h3>
+                        <p>Implementar soluciones</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">4</div>
+                        <h3>Verificar</h3>
+                        <p>Medir impacto con métricas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <h3>🎓 Beneficios para Cada Departamento</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div style="text-align: center; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                        <h4>👨‍💼 Administración</h4>
+                        <p>Monitoreo en tiempo real</p>
+                        <p>Alertas tempranas</p>
+                        <p>Data-driven decisions</p>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                        <h4>💰 Contabilidad</h4>
+                        <p>Registro automático</p>
+                        <p>Reportes sin esfuerzo</p>
+                        <p>Auditoría trail</p>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                        <h4>📞 Atención</h4>
+                        <p>Respuestas precisas</p>
+                        <p>Alertas automáticas</p>
+                        <p>Seguimiento de casos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTA DEL DISEÑADOR -->
+        <div class="designer-note">
+            <div class="separator"></div>
+            <div class="designer-name">
+                Diseño e Implementación del Sistema:<br>
+                Lcdo. Miguel Ángel Subero Arguinzones
+            </div>
+            <div class="designer-quote">
+                "Donde la gestión se encuentra con la innovación, nace la educación del futuro."
+            </div>
+            <div class="separator"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Sistema de Métricas de Pagos - Instituto Antonio José de Sucre Caracas</p>
+        <p>📧 escuelaaadministracion@utscaracas.edu.ve | 📞 +58 212-241-7808</p>
+    </footer>
+
+    <script>
+        // Funcionalidad de pestañas
+        function openTab(tabName) {
+            // Ocultar todas las pestañas
+            var tabs = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // Remover activo de todos los botones
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            
+            // Mostrar pestaña seleccionada
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        // Simulador de proceso
+        function updateProcess() {
+            const timeU = parseFloat(document.getElementById('time-u').value);
+            const timeV = parseFloat(document.getElementById('time-v').value);
+            const totalTime = timeU + timeV;
+            
+            // Actualizar valores mostrados
+            document.getElementById('time-u-value').textContent = timeU;
+            document.getElementById('time-v-value').textContent = timeV;
+            document.getElementById('step-u').textContent = `Tiempo: ${timeU}h`;
+            document.getElementById('step-v').textContent = `Tiempo: ${timeV}h`;
+            document.getElementById('step-w').textContent = `Total: ${totalTime}h`;
+            
+            // Actualizar barra total
+            const totalBar = document.getElementById('total-bar');
+            const totalValue = document.getElementById('total-value');
+            const slaStatus = document.getElementById('sla-status');
+            
+            totalBar.style.height = Math.min(100, (totalTime / 48) * 100) + '%';
+            totalValue.textContent = totalTime.toFixed(1) + 'h';
+            
+            // Cambiar color según SLA
+            if (totalTime <= 24) {
+                totalBar.style.background = '#2ecc71';
+                slaStatus.textContent = '✅ DENTRO DEL SLA';
+                slaStatus.style.color = '#2ecc71';
+            } else if (totalTime <= 36) {
+                totalBar.style.background = '#f39c12';
+                slaStatus.textContent = '⚠️ CERCA DEL LÍMITE';
+                slaStatus.style.color = '#f39c12';
+            } else {
+                totalBar.style.background = '#e74c3c';
+                slaStatus.textContent = '❌ FUERA DEL SLA';
+                slaStatus.style.color = '#e74c3c';
+            }
+        }
+
+        // Inicializar simulador
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProcess();
+        });
+    </script>
+</body>
+</html>
